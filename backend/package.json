@@ -1,5 +1,16 @@
 {
-	"dependencies": {
-		"hls.js": "^1.6.2"
-	}
+  "name": "skylarks-backend",
+  "version": "1.0.0",
+  "description": "Backend for Skylarks video streaming application",
+  "main": "manage.py",
+  "scripts": {
+    "start": "python manage.py runserver 0.0.0.0:$PORT",
+    "build": "pip install -r requirements.txt"
+  },
+  "dependencies": {
+    "hls.js": "^1.6.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
