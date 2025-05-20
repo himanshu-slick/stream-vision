@@ -5,7 +5,7 @@
   "main": "manage.py",
   "scripts": {
     "start": "python manage.py runserver 0.0.0.0:$PORT",
-    "build": "pip install -r requirements.txt"
+    "build": "pip3 install -r requirements.txt"
   },
   "dependencies": {
     "hls.js": "^1.6.2"
