@@ -126,7 +126,7 @@ def start_hls_stream(request):
         process = subprocess.Popen(ffmpeg_cmd, stdout=log_file, stderr=log_file)
         # Store the process to potentially manage it later (e.g., stopping old streams)
         active_ffmpeg_processes[stream_id] = process
-        return JsonResponse({'stream_id': stream_id, 'playlist_url': f'/hls/{stream_id}/stream.m3u8', 'log_file': log_path})
+        return JsonResponse({'stream_id': stream_id, 'playlist_url': f'/media/hls_media/{stream_id}/stream.m3u8', 'log_file': log_path})
     except Exception as e:
         return JsonResponse({'error': f"Failed to start FFmpeg: {str(e)}"}, status=500)
 
