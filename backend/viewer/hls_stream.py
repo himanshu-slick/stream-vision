@@ -114,6 +114,19 @@ def start_hls_stream(request):
             process = subprocess.Popen(ffmpeg_cmd, stdout=log_file, stderr=log_file)
             active_ffmpeg_processes[stream_id] = process
 
+            # Wait for the first playlist file to be generated
+            max_wait_time = 10  # Maximum time to wait in seconds
+            start_time = time.time()
+            while not os.path.exists(playlist_path):
+                if time.time() - start_time > max_wait_time:
+                    process.terminate()
+                    return JsonResponse({'error': 'Timeout waiting for stream to start'}, status=500)
+                time.sleep(0.5)
+
+            # Upload the initial playlist file
+            with open(playlist_path, 'rb') as f:
+                default_storage.save(f'{stream_dir}/stream.m3u8', ContentFile(f.read()))
+
             # Start a background task to monitor and upload files
             def monitor_and_upload():
                 while True:
