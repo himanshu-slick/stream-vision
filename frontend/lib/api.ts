@@ -22,5 +22,5 @@ export const startHLSStream = async (
 };
 
 export const getHLSStreamUrl = (streamId: string) => {
-  return `${API_BASE_URL}/hls/${streamId}/stream.m3u8`;
+  return `${API_BASE_URL}/media/hls_media/${streamId}/stream.m3u8`;
 };
