@@ -3,6 +3,7 @@ import axios from "axios";
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 console.log("API_BASE_URL", process.env.NEXT_PUBLIC_API_BASE_URL);
+
 export const startHLSStream = async (
   rtspUrl: string,
   username?: string,
@@ -17,6 +18,16 @@ export const startHLSStream = async (
     return response.data;
   } catch (error) {
     console.error("Error starting HLS stream:", error);
+    throw error;
+  }
+};
+
+export const stopHLSStream = async (streamId: string) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/stop_hls/${streamId}/`);
+    return response.data;
+  } catch (error) {
+    console.error("Error stopping HLS stream:", error);
     throw error;
   }
 };

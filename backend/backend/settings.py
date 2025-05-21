@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +29,7 @@ INSTALLED_APPS = [
     'viewer',  # Your app
     'channels', # For WebSocket support
     'corsheaders', # For CORS handling
+    'storages', # For S3 storage
 ]
 
 MIDDLEWARE = [
@@ -112,12 +114,24 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files (HLS streams)
-MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# AWS S3 Configuration
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'us-east-1')
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = 'public-read'
+AWS_S3_VERIFY = True
+
+# Use S3 for media files
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
+
 # HLS and FFmpeg settings
-HLS_MEDIA_ROOT = MEDIA_ROOT / 'hls_media'
-FFMPEG_LOG_DIR = BASE_DIR / 'ffmpeg_logs'
+HLS_MEDIA_ROOT = 'hls_media'  # This will now be a prefix in S3
+FFMPEG_LOG_DIR = 'ffmpeg_logs'  # This will now be a prefix in S3
 
 # CORS settings - Allow all origins for development
 CORS_ALLOW_ALL_ORIGINS = True 
